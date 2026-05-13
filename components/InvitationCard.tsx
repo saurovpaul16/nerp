@@ -228,7 +228,7 @@ export default function InvitationCard({ open, onClose }: InvitationCardProps) {
                   transition={{ delay: 0.8 }}
                 >
                   <p className="text-xs font-medium text-purple-300/80">
-                    RSVP by 15 June 2026 · Limited seats available
+                    RSVP by 10 June 2026
                   </p>
                   <p className="text-xs text-white/40 mt-0.5">
                     Contact: rsvp@nerp2026.party
