@@ -98,7 +98,7 @@ export default function SideCharacter() {
                   boxShadow: '0 0 16px rgba(236,72,153,0.5)',
                 }}
               >
-                Not a Host
+                Wannabe Host
               </div>
             </div>
 
