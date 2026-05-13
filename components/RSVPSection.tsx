@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useRef, useState, useCallback, useEffect } from 'react';
 import { motion, useInView, AnimatePresence } from 'framer-motion';
 import confetti from 'canvas-confetti';
 import { Send, Check, User, Users, Music, MessageSquare } from 'lucide-react';
@@ -104,6 +104,63 @@ function Textarea({
           }}
         />
       </div>
+    </motion.div>
+  );
+}
+
+function DeclineButton() {
+  const btnRef = useRef<HTMLDivElement>(null);
+  // Start off-screen until we know the viewport size
+  const [pos, setPos] = useState({ x: -999, y: -999 });
+  const initialized = useRef(false);
+
+  // Place button at a sensible default once mounted
+  useEffect(() => {
+    if (!initialized.current) {
+      setPos({ x: window.innerWidth / 2 + 80, y: window.innerHeight * 0.8 });
+      initialized.current = true;
+    }
+  }, []);
+
+  const handleMouseMove = useCallback((e: MouseEvent) => {
+    setPos(p => {
+      const dx = e.clientX - p.x;
+      const dy = e.clientY - p.y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist > 110) return p;
+      const angle = Math.atan2(dy, dx);
+      const nx = p.x - Math.cos(angle) * 130;
+      const ny = p.y - Math.sin(angle) * 130;
+      return {
+        x: Math.max(40, Math.min(window.innerWidth - 80, nx)),
+        y: Math.max(40, Math.min(window.innerHeight - 40, ny)),
+      };
+    });
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, [handleMouseMove]);
+
+  return (
+    <motion.div
+      ref={btnRef}
+      className="fixed z-[800] pointer-events-none"
+      animate={{ x: pos.x - 40, y: pos.y - 16 }}
+      transition={{ type: 'spring', stiffness: 350, damping: 20 }}
+    >
+      <button
+        className="px-6 py-2 rounded-xl text-xs font-semibold cursor-default select-none"
+        style={{
+          background: 'rgba(8,6,18,0.7)',
+          border: '1px solid rgba(255,255,255,0.1)',
+          color: 'rgba(255,255,255,0.25)',
+          backdropFilter: 'blur(10px)',
+        }}
+      >
+        Decline
+      </button>
     </motion.div>
   );
 }
@@ -272,6 +329,7 @@ export default function RSVPSection() {
                       </>
                     )}
                   </motion.button>
+
                 </motion.form>
               ) : (
                 <motion.div
@@ -306,6 +364,9 @@ export default function RSVPSection() {
             </AnimatePresence>
           </div>
         </motion.div>
+
+        {/* Decline button lives outside the card so it can escape freely */}
+        {<DeclineButton />}
       </div>
     </section>
   );
