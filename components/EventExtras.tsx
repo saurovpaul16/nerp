@@ -66,8 +66,8 @@ function MapWidget() {
           <MapPin size={14} style={{ color: '#EC4899' }} />
         </div>
         <div>
-          <p className="text-xs font-semibold text-white">Lavees</p>
-          <p className="text-[10px] text-white/40">Shillong, Meghalaya</p>
+          <p className="text-xs font-semibold text-white">Asgard Cottage</p>
+          <p className="text-[10px] text-white/40">Upland Road, Laitumkhrah, Shillong</p>
         </div>
       </div>
 
@@ -111,7 +111,7 @@ function MapWidget() {
           className="absolute bottom-3 left-3 px-2 py-1 rounded-lg text-[10px] font-medium text-white"
           style={{ background: 'rgba(0,0,0,0.7)', border: '1px solid rgba(255,255,255,0.1)' }}
         >
-          Lavees, Shillong
+          Asgard Cottage, Shillong
         </div>
       </div>
     </div>
