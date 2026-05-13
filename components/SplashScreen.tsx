@@ -12,11 +12,9 @@ export default function SplashScreen({ onEnter }: SplashScreenProps) {
   const [exiting, setExiting] = useState(false);
 
   const handleEnter = () => {
+    onEnter(); // call immediately while the user gesture is fresh — enables autoplay
     setExiting(true);
-    setTimeout(() => {
-      setVisible(false);
-      onEnter();
-    }, 1000);
+    setTimeout(() => setVisible(false), 1000);
   };
 
   return (
