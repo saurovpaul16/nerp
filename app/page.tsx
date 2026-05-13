@@ -12,6 +12,7 @@ import RSVPSection from '@/components/RSVPSection';
 import MusicPlayer from '@/components/MusicPlayer';
 import GreetingPopup from '@/components/GreetingPopup';
 import EventExtras from '@/components/EventExtras';
+import SideCharacter from '@/components/SideCharacter';
 import Footer from '@/components/Footer';
 import SplashScreen from '@/components/SplashScreen';
 
@@ -83,6 +84,7 @@ export default function Home() {
       <HostShowcase />
       <PartyTimeline />
       <Gallery />
+      <SideCharacter />
       <EventExtras />
       <RSVPSection />
       <Footer />
