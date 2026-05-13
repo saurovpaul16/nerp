@@ -354,8 +354,8 @@ function generateInvite(name: string) {
 
   // ── Download ──────────────────────────────────────────────────
   const link = document.createElement('a');
-  link.download = `NERP-invite-${name.replace(/\s+/g, '-')}.png`;
-  link.href = canvas.toDataURL('image/png');
+  link.download = `NERP-invite-${name.replace(/\s+/g, '-')}.jpg`;
+  link.href = canvas.toDataURL('image/jpeg', 0.95);
   link.click();
 }
 
