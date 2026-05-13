@@ -109,59 +109,50 @@ function Textarea({
 }
 
 function DeclineButton() {
-  const btnRef = useRef<HTMLDivElement>(null);
-  // Start off-screen until we know the viewport size
-  const [pos, setPos] = useState({ x: -999, y: -999 });
-  const initialized = useRef(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [x, setX] = useState(0);
 
-  // Place button at a sensible default once mounted
-  useEffect(() => {
-    if (!initialized.current) {
-      setPos({ x: window.innerWidth / 2 + 80, y: window.innerHeight * 0.8 });
-      initialized.current = true;
+  const dodge = useCallback((clientX: number) => {
+    if (!containerRef.current) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    const btnWidth = 90;
+    const pointerX = clientX - rect.left;
+    const center = rect.width / 2;
+    const maxShift = rect.width / 2 - btnWidth / 2 - 8;
+    if (Math.abs(pointerX - (center + x)) < 80) {
+      const dir = pointerX < center + x ? 1 : -1;
+      setX(prev => Math.max(-maxShift, Math.min(maxShift, prev + dir * 100)));
     }
-  }, []);
+  }, [x]);
 
-  const handleMouseMove = useCallback((e: MouseEvent) => {
-    setPos(p => {
-      const dx = e.clientX - p.x;
-      const dy = e.clientY - p.y;
-      const dist = Math.sqrt(dx * dx + dy * dy);
-      if (dist > 110) return p;
-      const angle = Math.atan2(dy, dx);
-      const nx = p.x - Math.cos(angle) * 130;
-      const ny = p.y - Math.sin(angle) * 130;
-      return {
-        x: Math.max(40, Math.min(window.innerWidth - 80, nx)),
-        y: Math.max(40, Math.min(window.innerHeight - 40, ny)),
-      };
-    });
-  }, []);
+  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    dodge(e.clientX);
+  }, [dodge]);
 
-  useEffect(() => {
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, [handleMouseMove]);
+  const handleTouchMove = useCallback((e: React.TouchEvent<HTMLDivElement>) => {
+    dodge(e.touches[0].clientX);
+  }, [dodge]);
 
   return (
-    <motion.div
-      ref={btnRef}
-      className="fixed z-[800] pointer-events-none"
-      animate={{ x: pos.x - 40, y: pos.y - 16 }}
-      transition={{ type: 'spring', stiffness: 350, damping: 20 }}
+    <div
+      ref={containerRef}
+      className="relative w-full flex justify-center mt-3 h-10 overflow-hidden"
+      onMouseMove={handleMouseMove}
+      onTouchMove={handleTouchMove}
     >
-      <button
-        className="px-6 py-2 rounded-xl text-xs font-semibold cursor-default select-none"
+      <motion.button
+        className="absolute cursor-default select-none px-6 py-2 rounded-xl text-xs font-semibold"
         style={{
-          background: 'rgba(8,6,18,0.7)',
-          border: '1px solid rgba(255,255,255,0.1)',
+          background: 'rgba(255,255,255,0.03)',
+          border: '1px solid rgba(255,255,255,0.08)',
           color: 'rgba(255,255,255,0.25)',
-          backdropFilter: 'blur(10px)',
         }}
+        animate={{ x }}
+        transition={{ type: 'spring', stiffness: 300, damping: 22 }}
       >
         Decline
-      </button>
-    </motion.div>
+      </motion.button>
+    </div>
   );
 }
 
@@ -329,7 +320,7 @@ export default function RSVPSection() {
                       </>
                     )}
                   </motion.button>
-
+                  <DeclineButton />
                 </motion.form>
               ) : (
                 <motion.div
@@ -365,8 +356,6 @@ export default function RSVPSection() {
           </div>
         </motion.div>
 
-        {/* Decline button lives outside the card so it can escape freely */}
-        {<DeclineButton />}
       </div>
     </section>
   );
