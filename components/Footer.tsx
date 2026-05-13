@@ -62,7 +62,7 @@ export default function Footer() {
         {/* Date */}
         <div className="text-center">
           <p className="text-sm font-medium text-white/50">
-            Wednesday, 20 May 2026 · 7 PM · Lavees, Shillong
+            Saturday, 20 June 2026 · 7 PM · Lavees, Shillong
           </p>
           <p className="text-xs text-white/20 mt-2">
             © 2026 NERP Birthday Bash. All vibes reserved.

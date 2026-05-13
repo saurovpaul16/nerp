@@ -11,7 +11,7 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "NERP Birthday Bash 2026 — An Exclusive Celebration",
   description:
-    "You're invited to the most exclusive party of 2026. NERP Birthday Bash — hosted by Neil, Eric, Ryan & Paul. May 20th, 2026.",
+    "You're invited to the most exclusive party of 2026. NERP Birthday Bash — hosted by Neil, Eric, Ryan & Paul. June 20th, 2026.",
   openGraph: {
     title: "NERP Birthday Bash 2026",
     description: "An exclusive celebration hosted by Neil • Eric • Ryan • Paul",

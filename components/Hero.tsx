@@ -208,7 +208,7 @@ export default function Hero({ onOpenInvite }: HeroProps) {
           className="mb-10"
         >
           <p className="text-xs font-semibold tracking-[0.3em] uppercase text-white/40 mb-4 text-center">
-            Countdown to 20 May 2026
+            Countdown to 20 June 2026
           </p>
           <CountdownTimer />
         </motion.div>

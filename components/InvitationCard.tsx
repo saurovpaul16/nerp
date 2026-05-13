@@ -11,7 +11,7 @@ interface InvitationCardProps {
 }
 
 const DETAILS = [
-  { icon: Calendar, label: 'Date', value: 'Wednesday, 20 May 2026' },
+  { icon: Calendar, label: 'Date', value: 'Saturday, 20 June 2026' },
   { icon: Clock, label: 'Time', value: '7:00 PM — Late' },
   { icon: MapPin, label: 'Venue', value: 'Lavees\nShillong, Meghalaya' },
   { icon: Shirt, label: 'Dress Code', value: 'Smart Formal — All Black Preferred' },
@@ -228,7 +228,7 @@ export default function InvitationCard({ open, onClose }: InvitationCardProps) {
                   transition={{ delay: 0.8 }}
                 >
                   <p className="text-xs font-medium text-purple-300/80">
-                    RSVP by 15 May 2026 · Limited seats available
+                    RSVP by 15 June 2026 · Limited seats available
                   </p>
                   <p className="text-xs text-white/40 mt-0.5">
                     Contact: rsvp@nerp2026.party
