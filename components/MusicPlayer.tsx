@@ -8,8 +8,6 @@ const BASE = process.env.NEXT_PUBLIC_BASE_PATH ?? '';
 
 const TRACKS = [
   { title: 'Clumsy', artist: 'Fergie', vibe: 'Party Banger', src: `${BASE}/song.mp3` },
-  { title: 'Midnight Ritual', artist: 'NERP Collective', vibe: 'Lo-fi Chill', src: '' },
-  { title: 'Neon Overflow', artist: 'Eric & The Blips', vibe: 'Ambient Wave', src: '' },
 ];
 
 const BAR_DELAYS = [0, 0.1, 0.2, 0.15, 0.05, 0.25, 0.08];
