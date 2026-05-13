@@ -1,8 +1,9 @@
 'use client';
 
 import { useRef } from 'react';
-import Image from 'next/image';
 import { motion, useInView, useMotionValue, useSpring, useTransform } from 'framer-motion';
+
+const BASE = process.env.NEXT_PUBLIC_BASE_PATH ?? '';
 
 const HOSTS = [
   {
@@ -110,11 +111,11 @@ function HostCard({
         {/* Full-width photo panel */}
         <div className="relative w-full h-52 overflow-hidden">
           {host.photo ? (
-            <Image
-              src={host.photo}
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={`${BASE}${host.photo}`}
               alt={host.name}
-              fill
-              className="object-cover object-center transition-transform duration-500 group-hover:scale-105"
+              className="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
             />
           ) : (
             <div
