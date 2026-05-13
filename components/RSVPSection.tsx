@@ -3,7 +3,7 @@
 import { useRef, useState, useCallback, useEffect } from 'react';
 import { motion, useInView, AnimatePresence } from 'framer-motion';
 import confetti from 'canvas-confetti';
-import { Send, Check, User, Users, Music, MessageSquare } from 'lucide-react';
+import { Send, Check, User, Users, Music, MessageSquare, Download } from 'lucide-react';
 
 const FIELD_VARIANTS = {
   hidden: { opacity: 0, y: 20 },
@@ -154,6 +154,223 @@ function DeclineButton() {
       </motion.button>
     </div>
   );
+}
+
+function generateInvite(name: string) {
+  const W = 1000, H = 580;
+  const canvas = document.createElement('canvas');
+  canvas.width = W;
+  canvas.height = H;
+  const ctx = canvas.getContext('2d')!;
+
+  // ── Background ──────────────────────────────────────────────
+  ctx.fillStyle = '#06040f';
+  ctx.fillRect(0, 0, W, H);
+
+  // Glow blobs
+  const blobs: [number, number, number, string][] = [
+    [200, 200, 320, 'rgba(139,92,246,0.22)'],
+    [800, 420, 260, 'rgba(6,182,212,0.16)'],
+    [500, 560, 200, 'rgba(236,72,153,0.12)'],
+  ];
+  blobs.forEach(([x, y, r, color]) => {
+    const g = ctx.createRadialGradient(x, y, 0, x, y, r);
+    g.addColorStop(0, color);
+    g.addColorStop(1, 'transparent');
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, W, H);
+  });
+
+  // Scanlines
+  ctx.fillStyle = 'rgba(255,255,255,0.012)';
+  for (let y = 0; y < H; y += 4) ctx.fillRect(0, y, W, 2);
+
+  // ── Border & strips ─────────────────────────────────────────
+  const rainbow = ctx.createLinearGradient(0, 0, W, 0);
+  rainbow.addColorStop(0, '#8B5CF6');
+  rainbow.addColorStop(0.4, '#06B6D4');
+  rainbow.addColorStop(0.7, '#EC4899');
+  rainbow.addColorStop(1, '#8B5CF6');
+
+  ctx.fillStyle = rainbow;
+  ctx.fillRect(0, 0, W, 5);
+  ctx.fillRect(0, H - 5, W, 5);
+
+  ctx.strokeStyle = 'rgba(139,92,246,0.35)';
+  ctx.lineWidth = 1;
+  ctx.strokeRect(1, 1, W - 2, H - 2);
+
+  // Inner border inset
+  ctx.strokeStyle = 'rgba(255,255,255,0.04)';
+  ctx.lineWidth = 1;
+  ctx.strokeRect(14, 14, W - 28, H - 28);
+
+  // Corner decorations
+  const corners: [number, number, number, number][] = [
+    [14, 14, 30, 0], [W - 14, 14, W - 44, 0],
+    [14, H - 14, 30, H], [W - 14, H - 14, W - 44, H],
+  ];
+  ctx.strokeStyle = 'rgba(139,92,246,0.6)';
+  ctx.lineWidth = 2;
+  corners.forEach(([x, y, ex, ey]) => {
+    ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(ex, y); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x, ey > y ? y + 16 : y - 16); ctx.stroke();
+  });
+
+  // ── Left panel: NERP + hosts ─────────────────────────────────
+  const nerp = ctx.createLinearGradient(50, 80, 50, 220);
+  nerp.addColorStop(0, '#ffffff');
+  nerp.addColorStop(0.35, '#c4b5fd');
+  nerp.addColorStop(0.8, '#8B5CF6');
+  nerp.addColorStop(1, '#06B6D4');
+  ctx.font = '900 72px Arial Black, Arial, sans-serif';
+  ctx.fillStyle = nerp;
+  ctx.textAlign = 'left';
+  ctx.shadowColor = 'rgba(139,92,246,0.7)';
+  ctx.shadowBlur = 20;
+  ctx.fillText('NERP', 52, 180);
+  ctx.shadowBlur = 0;
+
+  ctx.font = '700 12px Arial, sans-serif';
+  ctx.fillStyle = 'rgba(139,92,246,0.75)';
+  ctx.fillText('B I R T H D A Y   B A S H   2 0 2 6', 54, 238);
+
+  // Thin horizontal rule under subtitle
+  const lhr = ctx.createLinearGradient(52, 0, 320, 0);
+  lhr.addColorStop(0, 'rgba(139,92,246,0.7)');
+  lhr.addColorStop(1, 'transparent');
+  ctx.fillStyle = lhr;
+  ctx.fillRect(52, 250, 270, 1);
+
+  // Hosted by
+  ctx.font = '500 11px Arial, sans-serif';
+  ctx.fillStyle = 'rgba(255,255,255,0.3)';
+  ctx.fillText('HOSTED BY', 52, 280);
+  ctx.font = '700 15px Arial, sans-serif';
+  ctx.fillStyle = 'rgba(196,181,253,0.85)';
+  ctx.fillText('Neil  •  Eric  •  Ryan  •  Paul', 52, 302);
+
+  // ── Vertical divider ─────────────────────────────────────────
+  const vd = ctx.createLinearGradient(0, 60, 0, H - 60);
+  vd.addColorStop(0, 'transparent');
+  vd.addColorStop(0.2, 'rgba(139,92,246,0.5)');
+  vd.addColorStop(0.8, 'rgba(6,182,212,0.4)');
+  vd.addColorStop(1, 'transparent');
+  ctx.fillStyle = vd;
+  ctx.fillRect(370, 40, 1, H - 80);
+
+  // ── Right panel ───────────────────────────────────────────────
+  const RX = 400;
+
+  // "EXCLUSIVE INVITATION"
+  ctx.font = '700 10px Arial, sans-serif';
+  ctx.fillStyle = 'rgba(236,72,153,0.7)';
+  ctx.fillText('✦  E X C L U S I V E   I N V I T A T I O N  ✦', RX, 70);
+
+  // "You're invited,"
+  ctx.font = '400 18px Arial, sans-serif';
+  ctx.fillStyle = 'rgba(255,255,255,0.45)';
+  ctx.fillText("You're invited,", RX, 120);
+
+  // Guest name — auto-size
+  let fs = 68;
+  ctx.font = `900 ${fs}px Arial Black, Arial, sans-serif`;
+  while (ctx.measureText(name).width > W - RX - 50 && fs > 28) {
+    fs -= 2;
+    ctx.font = `900 ${fs}px Arial Black, Arial, sans-serif`;
+  }
+  const nameGrad = ctx.createLinearGradient(RX, 130, RX, 130 + fs);
+  nameGrad.addColorStop(0, '#ffffff');
+  nameGrad.addColorStop(0.5, '#c4b5fd');
+  nameGrad.addColorStop(1, '#67e8f9');
+  ctx.fillStyle = nameGrad;
+  ctx.shadowColor = 'rgba(139,92,246,0.5)';
+  ctx.shadowBlur = 20;
+  ctx.fillText(name, RX, 130 + fs);
+  ctx.shadowBlur = 0;
+
+  // Rule under name
+  const nhr = ctx.createLinearGradient(RX, 0, W - 40, 0);
+  nhr.addColorStop(0, 'rgba(139,92,246,0.7)');
+  nhr.addColorStop(0.6, 'rgba(6,182,212,0.4)');
+  nhr.addColorStop(1, 'transparent');
+  const nameBottom = 130 + fs + 14;
+  ctx.fillStyle = nhr;
+  ctx.fillRect(RX, nameBottom, W - RX - 40, 1);
+
+  // Event details grid
+  const details = [
+    { label: 'DATE', value: 'Saturday, 27 June 2026' },
+    { label: 'TIME', value: '7:00 PM — Late' },
+    { label: 'VENUE', value: 'To be announced soon' },
+  ];
+  const detailY = nameBottom + 28;
+  details.forEach(({ label, value }, i) => {
+    const col = i < 2 ? RX : RX;
+    const row = i < 2 ? detailY + i * 58 : detailY + 116;
+    ctx.font = '700 9px Arial, sans-serif';
+    ctx.fillStyle = 'rgba(139,92,246,0.75)';
+    ctx.fillText(label, col, row);
+    ctx.font = '600 15px Arial, sans-serif';
+    ctx.fillStyle = 'rgba(255,255,255,0.88)';
+    ctx.fillText(value, col, row + 20);
+  });
+
+  // ── Code word box ─────────────────────────────────────────────
+  const codeY = H - 108;
+  const codeX = RX;
+  const codeW = W - RX - 40;
+  const codeH = 62;
+
+  // Box background
+  ctx.fillStyle = 'rgba(139,92,246,0.08)';
+  roundRect(ctx, codeX, codeY, codeW, codeH, 10);
+  ctx.fill();
+  ctx.strokeStyle = 'rgba(139,92,246,0.35)';
+  ctx.lineWidth = 1;
+  roundRect(ctx, codeX, codeY, codeW, codeH, 10);
+  ctx.stroke();
+
+  ctx.font = '700 9px Arial, sans-serif';
+  ctx.fillStyle = 'rgba(139,92,246,0.7)';
+  ctx.fillText('🔐  SECRET CODE WORD', codeX + 14, codeY + 20);
+
+  ctx.font = '900 20px Arial Black, Arial, sans-serif';
+  const codeGrad = ctx.createLinearGradient(codeX, 0, codeX + codeW, 0);
+  codeGrad.addColorStop(0, '#c4b5fd');
+  codeGrad.addColorStop(0.5, '#67e8f9');
+  codeGrad.addColorStop(1, '#f9a8d4');
+  ctx.fillStyle = codeGrad;
+  ctx.fillText('SKIBIDI NERP', codeX + 14, codeY + 48);
+
+  // ── Footer ────────────────────────────────────────────────────
+  ctx.font = '500 10px Arial, sans-serif';
+  ctx.fillStyle = 'rgba(255,255,255,0.2)';
+  ctx.textAlign = 'left';
+  ctx.fillText('This invite is personal and non-transferable.', 52, H - 20);
+  ctx.fillStyle = 'rgba(139,92,246,0.45)';
+  ctx.textAlign = 'right';
+  ctx.fillText('nerp2026.party', W - 40, H - 20);
+
+  // ── Download ──────────────────────────────────────────────────
+  const link = document.createElement('a');
+  link.download = `NERP-invite-${name.replace(/\s+/g, '-')}.png`;
+  link.href = canvas.toDataURL('image/png');
+  link.click();
+}
+
+function roundRect(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, r: number) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.lineTo(x + w - r, y);
+  ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+  ctx.lineTo(x + w, y + h - r);
+  ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+  ctx.lineTo(x + r, y + h);
+  ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+  ctx.lineTo(x, y + r);
+  ctx.quadraticCurveTo(x, y, x + r, y);
+  ctx.closePath();
 }
 
 function fireSuccessConfetti() {
@@ -345,11 +562,27 @@ export default function RSVPSection() {
                   <h3 className="text-2xl font-black text-white mb-2">
                     You&apos;re on the list, {form.name}! 🎉
                   </h3>
-                  <p className="text-white/50 text-sm leading-relaxed">
+                  <p className="text-white/50 text-sm leading-relaxed mb-8">
                     NERP has been notified. See you on June 27th.
                     <br />
                     Don&apos;t be late.
                   </p>
+                  <motion.button
+                    onClick={() => generateInvite(form.name)}
+                    className="flex items-center gap-2 mx-auto px-6 py-3 rounded-xl font-bold text-sm text-white"
+                    style={{
+                      background: 'linear-gradient(135deg, #8B5CF6, #06B6D4)',
+                      boxShadow: '0 0 24px rgba(139,92,246,0.4)',
+                    }}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.4 }}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.97 }}
+                  >
+                    <Download size={16} />
+                    Download Your Invite
+                  </motion.button>
                 </motion.div>
               )}
             </AnimatePresence>
