@@ -333,7 +333,7 @@ function generateInvite(name: string) {
 
   ctx.font = '700 9px Arial, sans-serif';
   ctx.fillStyle = 'rgba(139,92,246,0.7)';
-  ctx.fillText('🔐  SECRET CODE WORD', codeX + 14, codeY + 20);
+  ctx.fillText('🔐  SECRET ENTRY CODE', codeX + 14, codeY + 20);
 
   ctx.font = '900 20px Arial Black, Arial, sans-serif';
   const codeGrad = ctx.createLinearGradient(codeX, 0, codeX + codeW, 0);
