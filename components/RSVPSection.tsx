@@ -297,7 +297,7 @@ export default function RSVPSection() {
                     You&apos;re on the list, {form.name}! 🎉
                   </h3>
                   <p className="text-white/50 text-sm leading-relaxed">
-                    NERP has been notified. See you on June 20th.
+                    NERP has been notified. See you on June 27th.
                     <br />
                     Don&apos;t be late.
                   </p>

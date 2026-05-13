@@ -11,7 +11,7 @@ interface InvitationCardProps {
 }
 
 const DETAILS = [
-  { icon: Calendar, label: 'Date', value: 'Saturday, 20 June 2026' },
+  { icon: Calendar, label: 'Date', value: 'Saturday, 27 June 2026' },
   { icon: Clock, label: 'Time', value: '7:00 PM — Late' },
   { icon: MapPin, label: 'Venue', value: 'Asgard Cottage\nUpland Road, Laitumkhrah\nShillong, Meghalaya' },
   { icon: Shirt, label: 'Dress Code', value: 'Smart Formal — All Black Preferred' },

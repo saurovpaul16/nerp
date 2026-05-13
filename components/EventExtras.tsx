@@ -19,7 +19,7 @@ function WeatherWidget() {
           <Cloud size={14} style={{ color: '#06B6D4' }} />
         </div>
         <p className="text-xs font-semibold tracking-[0.2em] uppercase text-cyan-400/70">
-          Forecast — 20 June 2026
+          Forecast — 27 June 2026
         </p>
       </div>
 

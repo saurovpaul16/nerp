@@ -87,7 +87,7 @@ export default function SplashScreen({ onEnter }: SplashScreenProps) {
                 Birthday Bash 2026
               </p>
               <p className="text-white/25 text-xs tracking-[0.25em] uppercase">
-                20 June · Asgard Cottage, Shillong
+                27 June · Asgard Cottage, Shillong
               </p>
             </motion.div>
 
