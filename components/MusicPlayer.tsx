@@ -1,15 +1,15 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Play, Pause, SkipForward, SkipBack, Volume2, VolumeX, ChevronUp } from 'lucide-react';
 
+const BASE = process.env.NEXT_PUBLIC_BASE_PATH ?? '';
+
 const TRACKS = [
-  { title: 'Midnight Ritual', artist: 'NERP Collective', vibe: 'Lo-fi Chill' },
-  { title: 'Neon Overflow', artist: 'Eric & The Blips', vibe: 'Party Banger' },
-  { title: 'Purple Haze 2026', artist: 'Neil Soundscape', vibe: 'Ambient Wave' },
-  { title: 'Ryan\'s Remix', artist: 'Ryan, unhinged', vibe: 'Club Mix' },
-  { title: 'Paul\'s Last Dance', artist: 'Paul & The Groove', vibe: 'Disco Funk' },
+  { title: 'Song', artist: 'Yuno Miles', vibe: 'Party Banger', src: `${BASE}/song.mp3` },
+  { title: 'Midnight Ritual', artist: 'NERP Collective', vibe: 'Lo-fi Chill', src: '' },
+  { title: 'Neon Overflow', artist: 'Eric & The Blips', vibe: 'Ambient Wave', src: '' },
 ];
 
 const BAR_DELAYS = [0, 0.1, 0.2, 0.15, 0.05, 0.25, 0.08];
@@ -34,23 +34,73 @@ function Equalizer({ playing }: { playing: boolean }) {
   );
 }
 
-export default function MusicPlayer() {
+interface MusicPlayerProps {
+  autoplay?: boolean;
+}
+
+export default function MusicPlayer({ autoplay = false }: MusicPlayerProps) {
   const [playing, setPlaying] = useState(false);
   const [trackIndex, setTrackIndex] = useState(0);
   const [muted, setMuted] = useState(false);
   const [expanded, setExpanded] = useState(false);
-  const [progress, setProgress] = useState(0.3);
+  const [progress, setProgress] = useState(0);
+  const audioRef = useRef<HTMLAudioElement>(null);
 
   const track = TRACKS[trackIndex];
 
+  // Autoplay when splash screen is dismissed
+  useEffect(() => {
+    if (autoplay && track.src) {
+      audioRef.current?.play().then(() => setPlaying(true)).catch(() => {});
+    }
+  }, [autoplay, track.src]);
+
+  // Sync play/pause with audio element
+  useEffect(() => {
+    if (!audioRef.current || !track.src) return;
+    if (playing) {
+      audioRef.current.play().catch(() => setPlaying(false));
+    } else {
+      audioRef.current.pause();
+    }
+  }, [playing, track.src]);
+
+  // Sync mute
+  useEffect(() => {
+    if (audioRef.current) audioRef.current.muted = muted;
+  }, [muted]);
+
+  // Track progress
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    const update = () => {
+      if (audio.duration) setProgress(audio.currentTime / audio.duration);
+    };
+    audio.addEventListener('timeupdate', update);
+    audio.addEventListener('ended', () => { setPlaying(false); setProgress(0); });
+    return () => {
+      audio.removeEventListener('timeupdate', update);
+    };
+  }, []);
+
+  // Load new track when trackIndex changes
+  useEffect(() => {
+    if (!audioRef.current) return;
+    audioRef.current.load();
+    setProgress(0);
+    if (playing && track.src) {
+      audioRef.current.play().catch(() => setPlaying(false));
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [trackIndex]);
+
   const nextTrack = useCallback(() => {
     setTrackIndex(i => (i + 1) % TRACKS.length);
-    setProgress(0);
   }, []);
 
   const prevTrack = useCallback(() => {
     setTrackIndex(i => (i - 1 + TRACKS.length) % TRACKS.length);
-    setProgress(0);
   }, []);
 
   return (
@@ -60,6 +110,10 @@ export default function MusicPlayer() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 2.5, duration: 0.6, type: 'spring' }}
     >
+      {/* Hidden audio element */}
+      <audio ref={audioRef} preload="auto">
+        {track.src && <source src={track.src} type="audio/mpeg" />}
+      </audio>
       <div
         className="rounded-2xl overflow-hidden"
         style={{
@@ -140,7 +194,11 @@ export default function MusicPlayer() {
                     style={{ background: 'rgba(255,255,255,0.08)' }}
                     onClick={(e) => {
                       const rect = e.currentTarget.getBoundingClientRect();
-                      setProgress((e.clientX - rect.left) / rect.width);
+                      const pct = (e.clientX - rect.left) / rect.width;
+                      setProgress(pct);
+                      if (audioRef.current && audioRef.current.duration) {
+                        audioRef.current.currentTime = pct * audioRef.current.duration;
+                      }
                     }}
                   >
                     <div
@@ -152,8 +210,15 @@ export default function MusicPlayer() {
                     />
                   </div>
                   <div className="flex justify-between text-[9px] text-white/30 mt-1">
-                    <span>{Math.floor(progress * 3)}:{String(Math.floor((progress * 180) % 60)).padStart(2, '0')}</span>
-                    <span>3:00</span>
+                    <span>
+                      {Math.floor((progress * (audioRef.current?.duration || 0)) / 60)}:
+                      {String(Math.floor((progress * (audioRef.current?.duration || 0)) % 60)).padStart(2, '0')}
+                    </span>
+                    <span>
+                      {audioRef.current?.duration
+                        ? `${Math.floor(audioRef.current.duration / 60)}:${String(Math.floor(audioRef.current.duration % 60)).padStart(2, '0')}`
+                        : '--:--'}
+                    </span>
                   </div>
                 </div>
 

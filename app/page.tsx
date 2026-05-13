@@ -13,36 +13,30 @@ import MusicPlayer from '@/components/MusicPlayer';
 import GreetingPopup from '@/components/GreetingPopup';
 import EventExtras from '@/components/EventExtras';
 import Footer from '@/components/Footer';
+import SplashScreen from '@/components/SplashScreen';
 
-// Canvas-based components loaded only in browser to avoid SSR issues
-const ParticleBackground = dynamic(() => import('@/components/ParticleBackground'), {
-  ssr: false,
-});
-const CursorGlow = dynamic(() => import('@/components/CursorGlow'), {
-  ssr: false,
-});
+const ParticleBackground = dynamic(() => import('@/components/ParticleBackground'), { ssr: false });
+const CursorGlow = dynamic(() => import('@/components/CursorGlow'), { ssr: false });
 
 export default function Home() {
   const [inviteOpen, setInviteOpen] = useState(false);
+  const [entered, setEntered] = useState(false);
 
   return (
     <main
       className="relative min-h-screen overflow-x-hidden"
       style={{ background: 'var(--bg)' }}
     >
-      {/* Ambient background particles */}
+      {/* Cinematic splash screen — blocks page until user clicks Enter */}
+      {!entered && <SplashScreen onEnter={() => setEntered(true)} />}
+
       <ParticleBackground />
-
-      {/* Custom cursor glow trail */}
       <CursorGlow />
-
-      {/* AI-style greeting popup */}
       <GreetingPopup />
 
-      {/* Floating music player */}
-      <MusicPlayer />
+      {/* Music player — autoplays once splash is dismissed */}
+      <MusicPlayer autoplay={entered} />
 
-      {/* Sticky nav */}
       <nav
         className="fixed top-0 left-0 right-0 z-[100] px-6 py-4 flex items-center justify-between"
         style={{
@@ -85,7 +79,6 @@ export default function Home() {
         </button>
       </nav>
 
-      {/* Sections */}
       <Hero onOpenInvite={() => setInviteOpen(true)} />
       <HostShowcase />
       <PartyTimeline />
@@ -94,7 +87,6 @@ export default function Home() {
       <RSVPSection />
       <Footer />
 
-      {/* Invitation card modal */}
       <InvitationCard open={inviteOpen} onClose={() => setInviteOpen(false)} />
     </main>
   );
