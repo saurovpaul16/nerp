@@ -91,7 +91,7 @@ function HostCard({
     >
       <motion.div
         ref={ref}
-        className="relative rounded-3xl p-6 cursor-pointer overflow-hidden group"
+        className="relative rounded-3xl cursor-pointer overflow-hidden group"
         style={{
           rotateX,
           rotateY,
@@ -99,7 +99,6 @@ function HostCard({
           background: 'rgba(255,255,255,0.03)',
           backdropFilter: 'blur(24px)',
           border: `1px solid ${host.border}`,
-          boxShadow: `0 0 0 1px rgba(255,255,255,0.04)`,
         }}
         onMouseMove={handleMouse}
         onMouseLeave={resetMouse}
@@ -108,50 +107,56 @@ function HostCard({
         }}
         transition={{ type: 'spring', stiffness: 200, damping: 15 }}
       >
-        {/* Background glow on hover */}
-        <div
-          className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-          style={{ background: `radial-gradient(circle at 50% 50%, ${host.accent} 0%, transparent 70%)` }}
-        />
-
-        {/* Avatar */}
-        <div className="relative flex flex-col items-center gap-4 z-10">
-          <motion.div
-            className="relative w-24 h-24 rounded-2xl overflow-hidden flex items-center justify-center text-4xl font-black text-white select-none"
-            style={{
-              background: host.photo ? 'transparent' : host.gradient,
-              boxShadow: `0 0 30px ${host.accent}`,
-              border: host.photo ? `2px solid ${host.border}` : 'none',
-            }}
-            whileHover={{ scale: 1.08 }}
-            transition={{ duration: 0.3 }}
-          >
-            {host.photo ? (
-              <Image src={host.photo} alt={host.name} fill className="object-cover object-top" />
-            ) : (
-              host.initial
-            )}
-            <span className="absolute -top-2 -right-2 text-xl z-10">{host.emoji}</span>
-          </motion.div>
-
-          <div className="text-center">
-            <h3
-              className="text-2xl font-black tracking-tight mb-1"
-              style={{ color: host.color }}
+        {/* Full-width photo panel */}
+        <div className="relative w-full h-52 overflow-hidden">
+          {host.photo ? (
+            <Image
+              src={host.photo}
+              alt={host.name}
+              fill
+              className="object-cover object-center transition-transform duration-500 group-hover:scale-105"
+            />
+          ) : (
+            <div
+              className="w-full h-full flex items-center justify-center text-6xl font-black text-white"
+              style={{ background: host.gradient }}
             >
-              {host.name}
-            </h3>
-            <p className="text-sm text-white/50 font-medium leading-relaxed max-w-[180px]">
-              &ldquo;{host.tagline}&rdquo;
-            </p>
-          </div>
-
-          {/* Glow bar */}
+              {host.initial}
+            </div>
+          )}
+          {/* Gradient fade to card body */}
           <div
-            className="w-12 h-0.5 rounded-full"
+            className="absolute bottom-0 left-0 right-0 h-16"
+            style={{ background: 'linear-gradient(to top, rgba(5,5,8,0.95), transparent)' }}
+          />
+          {/* Emoji badge */}
+          <span className="absolute top-3 right-3 text-xl bg-black/40 backdrop-blur-sm rounded-full px-2 py-1">
+            {host.emoji}
+          </span>
+        </div>
+
+        {/* Text body */}
+        <div className="px-5 pb-5 pt-3 text-center">
+          <h3
+            className="text-xl font-black tracking-tight mb-1"
+            style={{ color: host.color }}
+          >
+            {host.name}
+          </h3>
+          <p className="text-xs text-white/50 font-medium leading-relaxed">
+            &ldquo;{host.tagline}&rdquo;
+          </p>
+          <div
+            className="w-10 h-0.5 rounded-full mx-auto mt-3"
             style={{ background: host.gradient }}
           />
         </div>
+
+        {/* Hover glow */}
+        <div
+          className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+          style={{ background: `radial-gradient(circle at 50% 30%, ${host.accent} 0%, transparent 65%)` }}
+        />
       </motion.div>
     </motion.div>
   );
