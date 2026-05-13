@@ -190,15 +190,25 @@ export default function Hero({ onOpenInvite }: HeroProps) {
         </motion.div>
 
         {/* Hosted by */}
-        <motion.p
+        <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.1, duration: 0.8 }}
-          className="text-base sm:text-lg font-medium tracking-[0.2em] uppercase mb-10"
-          style={{ color: 'rgba(196,181,253,0.8)' }}
+          className="flex flex-col items-center gap-1 mb-10"
         >
-          Hosted by Neil&nbsp; •&nbsp; Eric&nbsp; •&nbsp; Ryan&nbsp; •&nbsp; Paul
-        </motion.p>
+          <p
+            className="text-xs font-semibold tracking-[0.35em] uppercase"
+            style={{ color: 'rgba(196,181,253,0.5)' }}
+          >
+            Hosted by
+          </p>
+          <p
+            className="text-base sm:text-xl font-bold tracking-[0.2em] uppercase"
+            style={{ color: 'rgba(196,181,253,0.9)' }}
+          >
+            Neil&nbsp; •&nbsp; Eric&nbsp; •&nbsp; Ryan&nbsp; •&nbsp; Paul
+          </p>
+        </motion.div>
 
         {/* Countdown */}
         <motion.div
