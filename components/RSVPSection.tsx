@@ -3,7 +3,7 @@
 import { useRef, useState, useCallback, useEffect } from 'react';
 import { motion, useInView, AnimatePresence } from 'framer-motion';
 import confetti from 'canvas-confetti';
-import { Send, Check, User, Users, Music, MessageSquare, Download } from 'lucide-react';
+import { Send, Check, User, Users, Music, MessageSquare, Download, X } from 'lucide-react';
 
 const FIELD_VARIANTS = {
   hidden: { opacity: 0, y: 20 },
@@ -352,11 +352,7 @@ function generateInvite(name: string) {
   ctx.textAlign = 'right';
   ctx.fillText('nerp2026.party', W - 40, H - 20);
 
-  // ── Download ──────────────────────────────────────────────────
-  const link = document.createElement('a');
-  link.download = `NERP-invite-${name.replace(/\s+/g, '-')}.jpg`;
-  link.href = canvas.toDataURL('image/jpeg', 0.95);
-  link.click();
+  return canvas.toDataURL('image/jpeg', 0.95);
 }
 
 function roundRect(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, r: number) {
@@ -391,6 +387,7 @@ export default function RSVPSection() {
   const [form, setForm] = useState({ name: '', guests: '1', song: '', message: '' });
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [inviteUrl, setInviteUrl] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -568,7 +565,7 @@ export default function RSVPSection() {
                     Don&apos;t be late.
                   </p>
                   <motion.button
-                    onClick={() => generateInvite(form.name)}
+                    onClick={() => setInviteUrl(generateInvite(form.name))}
                     className="flex items-center gap-2 mx-auto px-6 py-3 rounded-xl font-bold text-sm text-white"
                     style={{
                       background: 'linear-gradient(135deg, #8B5CF6, #06B6D4)',
@@ -580,8 +577,7 @@ export default function RSVPSection() {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.97 }}
                   >
-                    <Download size={16} />
-                    Download Your Invite
+                    ✦ Show Your Invite
                   </motion.button>
                 </motion.div>
               )}
@@ -590,6 +586,62 @@ export default function RSVPSection() {
         </motion.div>
 
       </div>
+
+      {/* Invite preview modal */}
+      <AnimatePresence>
+        {inviteUrl && (
+          <motion.div
+            className="fixed inset-0 z-[600] flex items-center justify-center p-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <motion.div
+              className="absolute inset-0"
+              style={{ background: 'rgba(0,0,0,0.88)', backdropFilter: 'blur(16px)' }}
+              onClick={() => setInviteUrl(null)}
+            />
+            <motion.div
+              className="relative z-10 flex flex-col items-center gap-5 w-full max-w-2xl"
+              initial={{ scale: 0.85, opacity: 0, y: 30 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.85, opacity: 0, y: 30 }}
+              transition={{ type: 'spring', stiffness: 220, damping: 22 }}
+            >
+              {/* Close */}
+              <button
+                onClick={() => setInviteUrl(null)}
+                className="absolute -top-3 -right-3 w-9 h-9 rounded-full flex items-center justify-center text-white/60 hover:text-white transition-colors z-10"
+                style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.12)' }}
+              >
+                <X size={16} />
+              </button>
+
+              {/* Invite image */}
+              <img
+                src={inviteUrl}
+                alt="Your NERP Invite"
+                className="w-full rounded-2xl"
+                style={{ boxShadow: '0 0 60px rgba(139,92,246,0.4), 0 30px 60px rgba(0,0,0,0.7)' }}
+              />
+
+              {/* Download button */}
+              <a
+                href={inviteUrl}
+                download={`NERP-invite-${form.name.replace(/\s+/g, '-')}.jpg`}
+                className="flex items-center gap-2 px-8 py-3 rounded-xl font-bold text-sm text-white"
+                style={{
+                  background: 'linear-gradient(135deg, #8B5CF6, #06B6D4)',
+                  boxShadow: '0 0 24px rgba(139,92,246,0.4)',
+                }}
+              >
+                <Download size={16} />
+                Download Invite
+              </a>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }
