@@ -530,7 +530,7 @@ export default function RSVPSection() {
                     ) : (
                       <>
                         <Send size={16} />
-                        <span>Confirm Attendance</span>
+                        <span>Get Your Invite</span>
                       </>
                     )}
                   </motion.button>
