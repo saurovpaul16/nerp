@@ -111,6 +111,7 @@ function Textarea({
 function DeclineButton() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [x, setX] = useState(0);
+  const [declined, setDeclined] = useState(false);
 
   const dodge = useCallback((clientX: number) => {
     if (!containerRef.current) return;
@@ -140,18 +141,37 @@ function DeclineButton() {
       onMouseMove={handleMouseMove}
       onTouchMove={handleTouchMove}
     >
-      <motion.button
-        className="absolute cursor-default select-none px-6 py-2 rounded-xl text-xs font-semibold"
-        style={{
-          background: 'rgba(255,255,255,0.03)',
-          border: '1px solid rgba(255,255,255,0.08)',
-          color: 'rgba(255,255,255,0.25)',
-        }}
-        animate={{ x }}
-        transition={{ type: 'spring', stiffness: 300, damping: 22 }}
-      >
-        Decline
-      </motion.button>
+      <AnimatePresence mode="wait">
+        {!declined ? (
+          <motion.button
+            key="decline"
+            type="button"
+            className="absolute cursor-default select-none px-6 py-2 rounded-xl text-xs font-semibold"
+            style={{
+              background: 'rgba(255,255,255,0.03)',
+              border: '1px solid rgba(255,255,255,0.08)',
+              color: 'rgba(255,255,255,0.25)',
+            }}
+            animate={{ x }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            transition={{ type: 'spring', stiffness: 300, damping: 22 }}
+            onClick={() => setDeclined(true)}
+          >
+            Decline
+          </motion.button>
+        ) : (
+          <motion.p
+            key="oops"
+            className="absolute text-xs font-semibold"
+            style={{ color: 'rgba(255,255,255,0.3)' }}
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4 }}
+          >
+            Nice try. You&apos;re coming. 😈
+          </motion.p>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
