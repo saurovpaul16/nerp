@@ -421,9 +421,7 @@ export default function RSVPSection() {
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.7 }}
         >
-          <p className="text-xs font-semibold tracking-[0.4em] uppercase text-purple-400/70 mb-3">
-            Secure Your Spot
-          </p>
+
           <h2
             className="text-5xl sm:text-6xl font-black tracking-tight"
             style={{
