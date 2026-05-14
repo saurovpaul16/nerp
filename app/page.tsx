@@ -82,9 +82,9 @@ export default function Home() {
 
       <Hero onOpenInvite={() => setInviteOpen(true)} />
       <HostShowcase />
+      <SideCharacter />
       <PartyTimeline />
       <Gallery />
-      <SideCharacter />
       <EventExtras />
       <RSVPSection />
       <Footer />
