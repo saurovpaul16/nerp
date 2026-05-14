@@ -239,7 +239,7 @@ export default function InvitationCard({ open, onClose }: InvitationCardProps) {
                       boxShadow: '0 0 20px rgba(139,92,246,0.35)',
                     }}
                   >
-                    Get Your Invite
+                    Open Invite
                   </a>
                 </motion.div>
               </div>

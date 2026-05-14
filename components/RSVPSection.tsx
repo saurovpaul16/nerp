@@ -528,7 +528,7 @@ export default function RSVPSection() {
                     ) : (
                       <>
                         <Send size={16} />
-                        <span>Get Your Invite</span>
+                        <span>Open Invite</span>
                       </>
                     )}
                   </motion.button>

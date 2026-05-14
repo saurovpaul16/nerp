@@ -246,7 +246,7 @@ export default function Hero({ onOpenInvite }: HeroProps) {
                 transform: 'skewX(-20deg)',
               }}
             />
-            <span className="relative text-white">Get Your Invite</span>
+            <span className="relative text-white">Open Invite</span>
 
             {/* Ripple ring */}
             <span
