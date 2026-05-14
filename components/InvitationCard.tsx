@@ -227,12 +227,20 @@ export default function InvitationCard({ open, onClose }: InvitationCardProps) {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.8 }}
                 >
-                  <p className="text-xs font-medium text-purple-300/80">
+                  <p className="text-xs font-medium text-purple-300/80 mb-3">
                     RSVP by 10 June 2026
                   </p>
-                  <p className="text-xs text-white/40 mt-0.5">
-                    Contact: rsvp@nerp2026.party
-                  </p>
+                  <a
+                    href="#rsvp"
+                    onClick={onClose}
+                    className="inline-flex items-center gap-2 px-5 py-2 rounded-xl text-xs font-bold text-white transition-all"
+                    style={{
+                      background: 'linear-gradient(135deg, #8B5CF6, #06B6D4)',
+                      boxShadow: '0 0 20px rgba(139,92,246,0.35)',
+                    }}
+                  >
+                    Get Your Invite
+                  </a>
                 </motion.div>
               </div>
 
