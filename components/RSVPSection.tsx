@@ -401,37 +401,22 @@ export default function RSVPSection() {
     if (!form.name) return;
     setSubmitting(true);
 
-    // Silently submit to Google Forms via hidden iframe (avoids CORS)
+    // Silently submit to Google Forms via no-cors fetch
     try {
-      const params = new URLSearchParams({
-        'entry.1212382460': form.name,
-        'entry.587447654': form.guests,
-        'entry.1897468458': form.song,
-        'entry.2052789242': form.message,
-        'submit': 'Submit',
-      });
-      const iframe = document.createElement('iframe');
-      iframe.style.display = 'none';
-      iframe.name = 'nerp-rsvp-frame';
-      document.body.appendChild(iframe);
-      const formEl = document.createElement('form');
-      formEl.method = 'POST';
-      formEl.action = 'https://docs.google.com/forms/d/e/1FAIpQLSe5rh9fMLuryFQNhVhJo9yGHN3ai7jisjXOVlV8NSWNUKt-Zg/formResponse';
-      formEl.target = 'nerp-rsvp-frame';
-      formEl.style.display = 'none';
-      params.forEach((value, key) => {
-        const input = document.createElement('input');
-        input.type = 'hidden';
-        input.name = key;
-        input.value = value;
-        formEl.appendChild(input);
-      });
-      document.body.appendChild(formEl);
-      formEl.submit();
-      setTimeout(() => {
-        document.body.removeChild(iframe);
-        document.body.removeChild(formEl);
-      }, 5000);
+      await fetch(
+        'https://docs.google.com/forms/d/e/1FAIpQLSe5rh9fMLuryFQNhVhJo9yGHN3ai7jisjXOVlV8NSWNUKt-Zg/formResponse',
+        {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: new URLSearchParams({
+            'entry.1212382460': form.name,
+            'entry.587447654': form.guests,
+            'entry.1897468458': form.song,
+            'entry.2052789242': form.message,
+          }).toString(),
+        }
+      );
     } catch {
       // silently ignore — form submission is best-effort
     }
