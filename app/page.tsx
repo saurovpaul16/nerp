@@ -76,7 +76,7 @@ export default function Home() {
             boxShadow: '0 0 20px rgba(139,92,246,0.3)',
           }}
         >
-          Open Invite
+          Get Your Invite
         </button>
       </nav>
 
