@@ -4,11 +4,11 @@ import { useRef } from 'react';
 import { motion, useInView, useScroll, useTransform } from 'framer-motion';
 
 const EVENTS = [
-  { time: '7:00 PM', title: 'Doors Open', desc: 'Step into the night. Welcome drinks await.', icon: '🚪', color: '#8B5CF6' },
-  { time: '8:00 PM', title: 'Dinner & Drinks', desc: 'Gourmet dining, craft cocktails, and good company.', icon: '🥂', color: '#06B6D4' },
-  { time: '9:00 PM', title: 'Games & Music', desc: 'The playlist drops. Games begin. Vibes only.', icon: '🎵', color: '#EC4899' },
+  { time: '5:00 PM', title: 'Doors Open', desc: 'Step into the night. BYOB — bring your finest.', icon: '🚪', color: '#8B5CF6' },
+  { time: '6:00 PM', title: 'Pool Time', desc: 'Dive in. The water is calling.', icon: '🏊', color: '#06B6D4' },
+  { time: '7:30 PM', title: 'Music & Dance', desc: 'The playlist drops. The floor is yours. Vibes only.', icon: '🎶', color: '#EC4899' },
+  { time: '9:00 PM', title: 'Dinner', desc: 'Good food, good company.', icon: '🍽️', color: '#34D399' },
   { time: '10:00 PM', title: 'Cake Cutting', desc: 'The moment. All four candles blown at once.', icon: '🎂', color: '#F59E0B' },
-  { time: '11:00 PM', title: 'Dance Floor Opens', desc: 'The beat drops. The floor is yours.', icon: '🪩', color: '#34D399' },
   { time: 'Midnight', title: 'Chaos Begins', desc: 'What happens at NERP, stays at NERP. 🤫', icon: '💥', color: '#F472B6' },
 ];
 

@@ -248,7 +248,14 @@ function generateInvite(name: string) {
   ctx.fillText('HOSTED BY', 52, 280);
   ctx.font = '700 15px Arial, sans-serif';
   ctx.fillStyle = 'rgba(196,181,253,0.85)';
-  ctx.fillText('Neil  •  Eric  •  Ryan  •  Paul', 52, 302);
+  const hostsText = 'Neil  •  Eric  •  Ryan  •  Paul';
+  ctx.fillText(hostsText, 52, 302);
+  const hostsCenter = 52 + ctx.measureText(hostsText).width / 2;
+  ctx.font = '500 12px Arial, sans-serif';
+  ctx.fillStyle = 'rgba(249,168,212,0.6)';
+  ctx.textAlign = 'center';
+  ctx.fillText('+ Mary', hostsCenter, 322);
+  ctx.textAlign = 'left';
 
   // ── Vertical divider ─────────────────────────────────────────
   const vd = ctx.createLinearGradient(0, 60, 0, H - 60);
@@ -300,20 +307,20 @@ function generateInvite(name: string) {
 
   // Event details grid
   const details = [
-    { label: 'DATE', value: 'Saturday, 27 June 2026' },
-    { label: 'TIME', value: '7:00 PM — Late' },
+    { label: 'DATE', value: 'Saturday, 20 June 2026' },
+    { label: 'TIME', value: '5:00 PM — Late' },
     { label: 'VENUE', value: 'To be announced soon' },
+    { label: 'DRINKS', value: 'BYOB 🍾' },
   ];
   const detailY = nameBottom + 28;
   details.forEach(({ label, value }, i) => {
-    const col = i < 2 ? RX : RX;
-    const row = i < 2 ? detailY + i * 58 : detailY + 116;
+    const row = detailY + i * 48;
     ctx.font = '700 9px Arial, sans-serif';
     ctx.fillStyle = 'rgba(139,92,246,0.75)';
-    ctx.fillText(label, col, row);
-    ctx.font = '600 15px Arial, sans-serif';
+    ctx.fillText(label, RX, row);
+    ctx.font = '600 14px Arial, sans-serif';
     ctx.fillStyle = 'rgba(255,255,255,0.88)';
-    ctx.fillText(value, col, row + 20);
+    ctx.fillText(value, RX, row + 18);
   });
 
   // ── Code word box ─────────────────────────────────────────────
@@ -558,7 +565,7 @@ export default function RSVPSection() {
                     You&apos;re on the list, {form.name}! 🎉
                   </h3>
                   <p className="text-white/50 text-sm leading-relaxed mb-8">
-                    NERP has been notified. See you on June 27th.
+                    NERP has been notified. See you on June 20th.
                     <br />
                     Don&apos;t be late.
                   </p>

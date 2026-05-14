@@ -3,7 +3,7 @@
 import { useRef, useState, useCallback, useEffect } from 'react';
 import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import confetti from 'canvas-confetti';
-import { MapPin, Clock, Shirt, Calendar, X } from 'lucide-react';
+import { MapPin, Clock, Shirt, Calendar, X, Wine } from 'lucide-react';
 
 interface InvitationCardProps {
   open: boolean;
@@ -11,10 +11,12 @@ interface InvitationCardProps {
 }
 
 const DETAILS = [
-  { icon: Calendar, label: 'Date', value: 'Saturday, 27 June 2026' },
-  { icon: Clock, label: 'Time', value: '7:00 PM — Late' },
+  { icon: Calendar, label: 'Date', value: 'Saturday, 20 June 2026' },
+  { icon: Clock, label: 'Time', value: '5:00 PM — Late' },
   { icon: MapPin, label: 'Venue', value: 'To be announced soon' },
   { icon: Shirt, label: 'Dress Code', value: 'Smart Formal — All Black Preferred' },
+  { icon: Wine, label: 'Drinks', value: 'BYOB 🍾' },
+
 ];
 
 function fireConfetti() {
@@ -98,7 +100,7 @@ export default function InvitationCard({ open, onClose }: InvitationCardProps) {
           {/* Card */}
           <motion.div
             ref={cardRef}
-            className="relative max-w-lg w-full"
+            className="relative max-w-lg w-full max-h-[90vh] overflow-y-auto"
             style={{
               rotateX,
               rotateY,
