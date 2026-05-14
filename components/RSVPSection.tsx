@@ -308,7 +308,7 @@ function generateInvite(name: string) {
   // Event details grid
   const details = [
     { label: 'DATE', value: 'Saturday, 20 June 2026' },
-    { label: 'TIME', value: '5:00 PM — Late' },
+    { label: 'TIME', value: '4:00 PM — Late' },
     { label: 'VENUE', value: 'To be announced soon' },
     { label: 'DRINKS', value: 'BYOB 🍾' },
   ];

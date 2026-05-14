@@ -12,9 +12,9 @@ interface InvitationCardProps {
 
 const DETAILS = [
   { icon: Calendar, label: 'Date', value: 'Saturday, 20 June 2026' },
-  { icon: Clock, label: 'Time', value: '5:00 PM — Late' },
+  { icon: Clock, label: 'Time', value: '4:00 PM — Late' },
   { icon: MapPin, label: 'Venue', value: 'To be announced soon' },
-  { icon: Shirt, label: 'Dress Code', value: 'Smart Formal — All Black Preferred' },
+  { icon: Shirt, label: 'Dress Code', value: 'Tropical Drip Only 🌴' },
   { icon: Wine, label: 'Drinks', value: 'BYOB 🍾' },
 
 ];
