@@ -13,7 +13,7 @@ interface InvitationCardProps {
 const DETAILS = [
   { icon: Calendar, label: 'Date', value: 'Saturday, 20 June 2026' },
   { icon: Clock, label: 'Time', value: '4:00 PM — Late' },
-  { icon: MapPin, label: 'Venue', value: 'To be announced soon' },
+  { icon: MapPin, label: 'Venue', value: "Lavee's Poolhouse", href: 'https://maps.app.goo.gl/xBwy89LuB4rYUED96' },
   { icon: Shirt, label: 'Dress Code', value: 'Tropical Drip Only 🌴' },
   { icon: Wine, label: 'Drinks', value: 'BYOB 🍾' },
 
@@ -189,7 +189,7 @@ export default function InvitationCard({ open, onClose }: InvitationCardProps) {
 
                 {/* Detail rows */}
                 <div className="space-y-5">
-                  {DETAILS.map(({ icon: Icon, label, value }, i) => (
+                  {DETAILS.map((item, i) => { const { icon: Icon, label, value } = item; return (
                     <motion.div
                       key={label}
                       className="flex items-start gap-4"
@@ -210,12 +210,24 @@ export default function InvitationCard({ open, onClose }: InvitationCardProps) {
                         <p className="text-xs font-semibold tracking-[0.15em] uppercase text-white/40 mb-0.5">
                           {label}
                         </p>
-                        <p className="text-sm font-medium text-white/90 leading-relaxed whitespace-pre-line">
-                          {value}
-                        </p>
+                        {'href' in item && item.href ? (
+                          <a
+                            href={item.href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-sm font-medium leading-relaxed underline underline-offset-2"
+                            style={{ color: '#a78bfa' }}
+                          >
+                            {value}
+                          </a>
+                        ) : (
+                          <p className="text-sm font-medium text-white/90 leading-relaxed whitespace-pre-line">
+                            {value}
+                          </p>
+                        )}
                       </div>
                     </motion.div>
-                  ))}
+                  );})}
                 </div>
 
                 {/* RSVP note */}

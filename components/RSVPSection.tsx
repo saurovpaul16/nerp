@@ -329,7 +329,7 @@ function generateInvite(name: string) {
   const details = [
     { label: 'DATE', value: 'Saturday, 20 June 2026' },
     { label: 'TIME', value: '4:00 PM — Late' },
-    { label: 'VENUE', value: 'To be announced soon' },
+    { label: 'VENUE', value: "Lavee's Poolhouse" },
     { label: 'DRINKS', value: 'BYOB 🍾' },
   ];
   const detailY = nameBottom + 28;

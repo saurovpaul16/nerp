@@ -53,8 +53,11 @@ function WeatherWidget() {
 
 function MapWidget() {
   return (
-    <div
-      className="rounded-2xl overflow-hidden"
+    <a
+      href="https://maps.app.goo.gl/xBwy89LuB4rYUED96"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="block rounded-2xl overflow-hidden hover:opacity-90 transition-opacity"
       style={{
         background: 'rgba(255,255,255,0.03)',
         backdropFilter: 'blur(24px)',
@@ -67,7 +70,7 @@ function MapWidget() {
         </div>
         <div>
           <p className="text-xs font-semibold text-white">Location</p>
-          <p className="text-[10px] text-white/40">To be announced soon</p>
+          <p className="text-[10px] text-white/40">Lavee&apos;s Poolhouse</p>
         </div>
       </div>
 
@@ -111,10 +114,10 @@ function MapWidget() {
           className="absolute bottom-3 left-3 px-2 py-1 rounded-lg text-[10px] font-medium text-white"
           style={{ background: 'rgba(0,0,0,0.7)', border: '1px solid rgba(255,255,255,0.1)' }}
         >
-          Location TBA
+          Lavee&apos;s Poolhouse
         </div>
       </div>
-    </div>
+    </a>
   );
 }
 
