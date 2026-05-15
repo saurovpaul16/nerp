@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState, useCallback } from 'react';
+import { useRef, useState, useCallback, useEffect } from 'react';
 import { motion, useInView } from 'framer-motion';
 
 const BASE = process.env.NEXT_PUBLIC_BASE_PATH ?? '';
@@ -49,6 +49,26 @@ function VideoCard({
       videoRef.current.pause();
       videoRef.current.currentTime = 0;
     }
+  }, []);
+
+  // On touch devices, play when scrolled into view
+  useEffect(() => {
+    const el = videoRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!window.matchMedia('(hover: none)').matches) return;
+        if (entry.isIntersecting) {
+          el.play().catch(() => {});
+        } else {
+          el.pause();
+          el.currentTime = 0;
+        }
+      },
+      { threshold: 0.5 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
   }, []);
 
   return (
