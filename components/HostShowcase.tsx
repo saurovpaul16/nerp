@@ -211,7 +211,7 @@ export default function HostShowcase() {
             Meet NERP
           </h2>
           <p className="mt-4 text-white/40 text-base max-w-md mx-auto">
-            Four friends. One legendary night. Expect nothing less than perfection.
+            Five friends. One legendary night. Expect nothing less than perfection.
           </p>
         </motion.div>
 
