@@ -208,6 +208,12 @@ export default function Hero({ onOpenInvite }: HeroProps) {
           >
             Neil&nbsp; •&nbsp; Eric&nbsp; •&nbsp; Ryan&nbsp; •&nbsp; Paul
           </p>
+          <p
+            className="text-base sm:text-xl font-bold tracking-[0.2em] uppercase mt-1"
+            style={{ color: 'rgba(249,168,212,0.7)' }}
+          >
+            •&nbsp; Mary&nbsp; •
+          </p>
         </motion.div>
 
         {/* Countdown */}
